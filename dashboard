@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SolarSense</title>
+<style>
+:root{--nav:#0f2347;--bg:#eef2f8;--card:#fff;--ink:#14213d;--mut:#5d6b86;--line:#dde4f0;--pri:#2563eb;--ok:#16a34a;--warn:#ea8a0c;--bad:#dc2626;--off:#8b95a8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1426;--card:#142039;--ink:#e6ecf8;--mut:#9aa8c4;--line:#243453;--pri:#5b8cff;color-scheme:dark}}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:14px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.login{display:grid;grid-template-columns:1.1fr 1fr;min-height:100vh}
+.hero{background:linear-gradient(160deg,#0f2347,#1d4ed8);color:#fff;padding:48px;display:flex;flex-direction:column;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px}
+.panelart{height:200px;border-radius:12px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0 2px,transparent 2px 60px),repeating-linear-gradient(0deg,rgba(255,255,255,.35) 0 2px,transparent 2px 50px),#173b7a;transform:perspective(500px) rotateX(18deg);border:2px solid #9bb6ee;margin:24px 0}
+.hero h1{font-size:30px;margin:0 0 6px}.hero p{margin:0;opacity:.85}
+.formwrap{display:flex;align-items:center;justify-content:center;padding:32px}
+.form{width:100%;max-width:380px}
+.form h2{font-size:26px;margin:0 0 4px}
+label{display:block;font-weight:600;margin:14px 0 4px}
+input[type=text],input[type=password],input[type=email],input[type=number],select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.btn{background:var(--pri);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:600}
+.btn.sec{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.bad{background:var(--bad)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.err{color:var(--bad);font-size:13px;min-height:18px;margin-top:6px}
+.note{background:rgba(234,138,12,.12);border:1px solid var(--warn);border-radius:8px;padding:8px 12px;font-size:13px;margin:12px 0}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{flex:1;border:0;background:transparent;color:var(--ink);padding:8px}
+.seg button.on{background:var(--pri);color:#fff}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.side{background:var(--nav);color:#c9d6f2;padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.side .logo{color:#fff;padding:0 8px 18px}
+.side button{display:flex;gap:10px;align-items:center;background:none;border:0;color:inherit;text-align:left;padding:10px;border-radius:8px}
+.side button:hover{background:rgba(255,255,255,.08)}.side button.on{background:var(--pri);color:#fff}
+.side svg{width:18px;height:18px;flex:none}
+.main{padding:24px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.top h1{margin:0;font-size:24px}.top p{margin:2px 0 0;color:var(--mut)}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;background:var(--line);color:var(--mut)}
+.pill.ok{background:rgba(22,163,74,.15);color:var(--ok)}.pill.warn{background:rgba(234,138,12,.17);color:var(--warn)}.pill.bad{background:rgba(220,38,38,.15);color:var(--bad)}.pill.demo{background:rgba(37,99,235,.14);color:var(--pri)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin-bottom:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(15,35,71,.07);min-width:0}
+.card h3{margin:0 0 8px;font-size:15px}
+.big{font-size:28px;font-weight:700;line-height:1.2}.unit{font-size:14px;color:var(--mut);font-weight:500}
+.sub{color:var(--mut);font-size:12.5px;margin-top:4px}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:var(--pri)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line)}
+.tw{overflow-x:auto}
+ul.feed{list-style:none;margin:0;padding:0}ul.feed li{padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;justify-content:space-between}
+.chart text{fill:var(--mut);font-size:10px}.chart{width:100%;height:auto;display:block}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal .card{max-width:380px;width:100%}
+.toast{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--nav);color:#fff;padding:10px 16px;border-radius:8px;z-index:60}
+.mobnav{display:none}
+@media(max-width:820px){.login{grid-template-columns:1fr}.hero{padding:28px}.panelart{height:110px}
+.app{grid-template-columns:1fr}.side{position:static;height:auto;flex-direction:row;overflow-x:auto;padding:8px}.side .logo{display:none}.side button{white-space:nowrap}.main{padding:16px}}
+</style></head>
+<body><div id="root"></div>
+<script>
+const $=s=>document.querySelector(s);
+const IC={dash:'M3 3h8v8H3zM13 3h8v5h-8zM13 10h8v11h-8zM3 13h8v8H3z',pan:'M3 6l3-3h15l-3 3zM3 6h15v13H3z',bolt:'M13 2L4 14h7l-1 8 9-12h-7z',clean:'M12 3c3 4 6 7 6 11a6 6 0 01-12 0c0-4 3-7 6-11z',hist:'M12 7v5l3 2M3 12a9 9 0 109-9',set:'M12 8a4 4 0 100 8 4 4 0 000-8zM3 12h3M18 12h3M12 3v3M12 18v3',out:'M9 4H4v16h5M16 8l4 4-4 4M20 12H9'};
+const ic=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${IC[k]}"/></svg>`;
+const sun=`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>`;
+const load=()=>{try{return JSON.parse(localStorage.getItem('ss_cfg'))||{}}catch(e){return{}}};
+const save=c=>{try{localStorage.setItem('ss_cfg',JSON.stringify(c));return true}catch(e){return false}};
+const cfg=Object.assign({channel:'',readKey:'',refresh:60,f:{v:1,i:2,p:3,t:4},vmin:12,vmax:22,imax:5},load());
+try{const q=new URLSearchParams(location.search);if(q.get('channel'))cfg.channel=q.get('channel');if(q.get('key'))cfg.readKey=q.get('key')}catch(e){}
+const S={user:null,role:'client',page:'dash',mode:'Manual',run:false,pct:0,period:36,src:'demo',data:null,msg:''};
+/* ---- data layer (services/thingSpeak) ---- */
+function demoData(n=144){const o=[],now=Date.now();for(let k=0;k<n;k++){const t=now-(n-1-k)*600000,h=new Date(t).getHours()+new Date(t).getMinutes()/60,s=Math.max(0,Math.sin((h-6)/12*Math.PI)),v=s>0?16+3.2*s+Math.sin(k)*.15:0.4,i=s*2.4+Math.cos(k*1.3)*.05;o.push({t,v:+v.toFixed(2),i:+Math.max(0,i).toFixed(2),p:+(v*Math.max(0,i)).toFixed(1),dust:+(18+k*.35+Math.sin(k/5)*3).toFixed(0)})}return o}
+async function fetchLive(){const u=`https://api.thingspeak.com/channels/${cfg.channel}/feeds.json?results=144${cfg.readKey?'&api_key='+cfg.readKey:''}`;const r=await fetch(u);if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();return j.feeds.map(f=>{const v=parseFloat(f['field'+cfg.f.v]),i=parseFloat(f['field'+cfg.f.i]);return{t:new Date(f.created_at).getTime(),v:isNaN(v)?null:v,i:isNaN(i)?null:i,p:isNaN(v*i)?null:+(v*i).toFixed(1),dust:null}})}
+async function refresh(){if(cfg.channel){try{S.data=await fetchLive();S.src='live';S.msg=''}catch(e){S.data=demoData();S.src='demo';S.msg='ThingSpeak unreachable ('+e.message+'). Showing demonstration data.'}}else{S.data=demoData();S.src='demo';S.msg=''}render()}
+/* ---- helpers ---- */
+const stats=a=>{const x=a.filter(n=>n!=null);return x.length?{min:Math.min(...x),max:Math.max(...x),avg:x.reduce((s,n)=>s+n,0)/x.length}:null};
+function line(vals,ts,color,unit){const w=600,h=190,L=38,B=22,x=vals.filter(n=>n!=null);if(!x.length)return'<p class="sub">Data unavailable</p>';const mn=Math.min(...x),mx=Math.max(...x),r=(mx-mn)||1,pts=vals.map((v,k)=>v==null?null:[L+k/(vals.length-1)*(w-L-8),8+(h-B-16)*(1-(v-mn)/r)]).filter(Boolean),d=pts.map(p=>p.join(',')).join(' ');
+const tick=[0,1,2].map(k=>{const y=8+(h-B-16)*(k/2);return`<line x1="${L}" x2="${w-8}" y1="${y}" y2="${y}" stroke="var(--line)"/><text x="${L-4}" y="${y+3}" text-anchor="end">${(mx-r*k/2).toFixed(1)}</text>`}).join('');
+const xl=[0,.33,.66,1].map(f=>{const k=Math.round(f*(ts.length-1));return`<text x="${L+f*(w-L-8)}" y="${h-6}" text-anchor="${f?f<1?'middle':'end':'start'}">${new Date(ts[k]).toTimeString().slice(0,5)}</text>`}).join('');
+return`<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Line chart in ${unit}">${tick}${xl}<polygon points="${L},${h-B-8} ${d} ${w-8},${h-B-8}" fill="${color}" opacity=".12"/><polyline points="${d}" fill="none" stroke="${color}" stroke-width="2"/></svg>`}
+const fmt=(n,d=2)=>n==null?'—':n.toFixed(d);
+const stale=t=>Date.now()-t>30*60000;
+function card(t,val,unit,sub,pill){return`<div class="card"><div class="row"><h3>${t}</h3>${pill||''}</div><div class="big">${val} <span class="unit">${unit||''}</span></div><div class="sub">${sub||''}</div></div>`}
+const demoPill='<span class="pill demo">Demo data</span>';
+function toast(m){const e=document.createElement('div');e.className='toast';e.textContent=m;document.body.append(e);setTimeout(()=>e.remove(),2600)}
+function ask(msg,cb){const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class="card" role="dialog" aria-modal="true"><h3>Please confirm</h3><p>${msg}</p><div class="row" style="justify-content:flex-end"><button class="btn sec" id="n">Cancel</button><button class="btn" id="y">Confirm</button></div></div>`;document.body.append(m);m.querySelector('#n').onclick=()=>m.remove();m.querySelector('#y').onclick=()=>{m.remove();cb()}}
+/* ---- login ---- */
+function loginView(){$('#root').innerHTML=`<div class="login"><div class="hero"><div class="logo">${sun} SolarSense</div><div><div class="panelart" aria-hidden="true"></div><h1>Solar Panel Cleaning System</h1><p>Clean Panels | Better Efficiency | A Greener Tomorrow</p></div></div>
+<div class="formwrap"><form class="form" id="lf" novalidate><h2>Welcome Back</h2><p class="sub">Sign in to monitor your panels.</p>
+<div class="note"><b>Demonstration login.</b> No real authentication is configured. Pick a role to preview each interface.</div>
+<div class="seg" role="group" aria-label="Role"><button type="button" data-r="admin">Admin</button><button type="button" data-r="client" class="on">Client</button></div>
+<label for="u">Email or username</label><input id="u" type="text" autocomplete="username">
+<label for="p">Password</label><div class="row" style="flex-wrap:nowrap"><input id="p" type="password" autocomplete="current-password"><button type="button" class="btn sec" id="sh">Show</button></div>
+<div class="err" id="er" role="alert"></div>
+<div class="row" style="margin:6px 0 14px"><label style="margin:0;font-weight:400"><input type="checkbox" id="rm"> Remember me</label><a href="#" id="fp">Forgot password?</a></div>
+<button class="btn" style="width:100%">Log in</button></form></div></div>`;
+let role='client';document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{role=b.dataset.r;document.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b))});
+$('#sh').onclick=()=>{const p=$('#p');p.type=p.type=='password'?'text':'password';$('#sh').textContent=p.type=='password'?'Show':'Hide'};
+$('#fp').onclick=e=>{e.preventDefault();$('#er').textContent='Password reset is not available in this demo.'};
+$('#lf').onsubmit=e=>{e.preventDefault();const u=$('#u').value.trim(),p=$('#p').value;if(!u)return $('#er').textContent='Enter your email or username.';if(p.length<4)return $('#er').textContent='Password must be at least 4 characters.';S.user=u;S.role=role;S.page='dash';refresh()}}
+/* ---- shell ---- */
+const NAV=[['dash','Dashboard','dash'],['panel','Panel Monitoring','pan'],['elec','Electrical Monitoring','bolt'],['clean','Cleaning Control','clean'],['hist','History','hist'],['set','Settings','set']];
+function shell(title,sub,body){const adm=S.role=='admin';const items=NAV.filter(n=>adm?n[0]!='panel'||true:n[0]!='clean'||true).map(n=>`<button class="${S.page==n[0]?'on':''}" data-p="${n[0]}" ${S.page==n[0]?'aria-current="page"':''}>${ic(n[2])}${n[1]}</button>`).join('');
+$('#root').innerHTML=`<div class="app"><nav class="side"><div class="logo">${sun} SolarSense</div>${items}<button data-p="out" style="margin-top:auto">${ic('out')}Logout</button></nav><main class="main"><div class="top"><div><h1>${title}</h1><p>${sub}</p></div><div><span class="pill ${S.src=='live'?'ok':'demo'}" style="margin-right:6px">${S.src=='live'?'Live: ThingSpeak':'Demo data'}</span><span class="pill ${adm?'ok':''}">${adm?'Administrator':'Client'}: ${S.user}</span></div></div>${S.msg?`<div class="note">${S.msg}</div>`:''}${body}</main></div>`;
+document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{if(b.dataset.p=='out'){S.user=null;return loginView()}S.page=b.dataset.p;render()});window.scrollTo(0,0)}
+function d(){return S.data}
+function cleanCtl(){const dis=S.src=='demo';return`<div class="card"><div class="row"><h3>Manual cleaning control</h3><span class="pill ${S.run?'warn':'ok'}">${S.run?'Cleaning…':'Idle'}</span></div><div class="note">Demonstration only: no hardware control channel is connected, so these buttons do not run a physical motor or pump.</div><div class="bar"><i style="width:${S.pct}%"></i></div><div class="sub">${S.pct}% complete · Mode: ${S.mode}</div><div class="row" style="justify-content:flex-start;margin-top:12px"><button class="btn" data-a="start" ${S.run?'disabled':''}>Start cleaning</button><button class="btn bad" data-a="stop" ${S.run?'':'disabled'}>Stop cleaning</button><button class="btn sec" data-a="mode">Switch to ${S.mode=='Manual'?'Automatic':'Manual'}</button></div></div>`}
+let tm;function wire(){document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const a=b.dataset.a;if(a=='start')ask('Start a simulated cleaning cycle?',()=>{S.run=true;S.pct=0;clearInterval(tm);tm=setInterval(()=>{S.pct=Math.min(100,S.pct+5);if(S.pct>=100){S.run=false;clearInterval(tm);toast('Cleaning completed (simulated)')}render()},700);render()});if(a=='stop')ask('Stop the cleaning cycle?',()=>{S.run=false;clearInterval(tm);render();toast('Cleaning stopped')});if(a=='mode'){S.mode=S.mode=='Manual'?'Automatic':'Manual';render();toast('Mode: '+S.mode)}});
+document.querySelectorAll('[data-per]').forEach(s=>s.onchange=()=>{S.period=+s.value;render()});const tc=$('#tc');if(tc)tc.onclick=async()=>{const ch=$('#c1').value.trim();if(!ch)return toast('Enter a Channel ID first');const k=$('#c2').value.trim();try{const r=await fetch(`https://api.thingspeak.com/channels/${ch}/feeds/last.json${k?'?api_key='+k:''}`);if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();toast('Connected. Last entry '+new Date(j.created_at).toLocaleTimeString())}catch(e){toast('Cannot reach ThingSpeak: '+e.message)}};const sf=$('#cf');if(sf)sf.onsubmit=e=>{e.preventDefault();const g=i=>$(i).value;cfg.channel=g('#c1').trim();cfg.readKey=g('#c2').trim();cfg.refresh=Math.max(15,+g('#c3')||60);cfg.f.v=+g('#c7')||1;cfg.f.i=+g('#c8')||2;const lo=+g('#c4'),hi=+g('#c5'),im=+g('#c6');if(lo>=hi||im<=0){toast('Check thresholds: min must be below max');return}cfg.vmin=lo;cfg.vmax=hi;cfg.imax=im;toast(save(cfg)?'Settings saved':'Could not save in this browser');refresh()}}
+const SAMPLE='<span class="pill demo">Sample activity</span>';
+/* ---- pages ---- */
+function dashboard(){const a=S.role=='admin';const D=d(),last=D[D.length-1];
+if(a)return shell('Admin dashboard','Fleet overview and system status.',`<div class="grid">${card('Total solar panels',1,'','One prototype panel',demoPill)}${card('Panels needing cleaning',1,'','Dust above 40',demoPill)}${card('Panels cleaned',0,'','This week',demoPill)}${card('Water level',72,'%','Simulated',demoPill)}</div>
+<div class="grid">${[['Cleaning motor',S.run?'ON':'OFF'],['Water pump',S.run?'ON':'OFF'],['Obstacle detection','Clear'],['System status',S.src=='live'?'Online':'Unavailable']].map(x=>card(x[0],x[1],'',S.src=='live'&&x[0]=='System status'?'ThingSpeak responding':'Simulated: no hardware feedback',S.src=='live'&&x[0]=='System status'?'<span class="pill ok">Live</span>':'<span class="pill">Simulated</span>')).join('')}</div>
+<div class="grid g2">${cleanCtl()}<div class="card"><div class="row"><h3>Recent activity</h3>${SAMPLE}</div><ul class="feed"><li>Cleaning cycle completed<span class="sub">08:12</span></li><li>High dust level detected<span class="sub">07:40</span></li><li>Water level updated<span class="sub">07:00</span></li><li>Sensor connection lost<span class="sub">Yesterday</span></li><li>System reconnected<span class="sub">Yesterday</span></li></ul></div></div>`);
+return shell('Hello, '+S.user+'!','Summary of your solar panel system.',`<div class="grid g2"><div class="card"><div class="row"><h3>Solar panel overview</h3>${demoPill}</div><div class="panelart" style="height:110px;margin:10px 0;transform:none"></div><b>SP-01 · Rooftop panel</b> <span class="pill warn">Dirty</span><div class="sub">Dust level: ${last.dust} (sample) · Reflectivity: Sensor Not Configured · Last cleaned: not recorded</div></div>
+<div class="card"><div class="row"><h3>System status</h3>${demoPill}</div><div class="sub">Water availability</div><div class="bar"><i style="width:72%"></i></div><div class="sub">Battery level: Sensor Not Configured</div><div class="sub" style="margin-top:8px">Mode: <b>${S.mode}</b> · Cleaning: <b>${S.run?'In progress':'Idle'}</b></div></div></div>${cleanCtl()}`)}
+function panel(){const D=d(),t=D.map(x=>x.t),du=D.map(x=>x.dust),trend=du[du.length-1]>du[0]?'Increasing':'Decreasing';
+shell('Panel monitoring','Sensor readings, dust history and maintenance.',`<div class="grid">${card('Temperature',S.src=='live'?'Data Unavailable':'31.4','°C','Sample reading',demoPill)}${card('Humidity','Sensor Not Configured','','Add a humidity sensor and map a ThingSpeak field')}${card('Dust level',du[du.length-1],'','Trend: '+trend,demoPill)}${card('Light reflectivity','Sensor Not Configured','','')}</div>
+<div class="grid g2"><div class="card"><div class="row"><h3>Dust detection history</h3>${demoPill}</div>${line(du,t,'#ea8a0c','dust level')}</div><div class="card"><div class="row"><h3>Alerts and notifications</h3>${SAMPLE}</div><ul class="feed"><li>High dust level<span class="pill warn">Warning</span></li><li>Low water level<span class="pill">Not monitored</span></li><li>Sensor offline<span class="pill">None</span></li><li>Cleaning completed<span class="pill ok">Info</span></li></ul></div></div>
+<div class="grid g2"><div class="card"><div class="row"><h3>Cleaning history</h3>${SAMPLE}</div>${histTable()}</div><div class="card"><h3>Maintenance and recommendations</h3><ul class="feed"><li>Next maintenance<span class="sub">Not scheduled</span></li><li>Clean the panel when dust level passes 40<span></span></li><li>Check the water tank before each cycle<span></span></li><li>Inspect sensor wiring monthly<span></span></li></ul></div></div>`)}
+function histTable(){return`<div class="tw"><table><tr><th>Date and time</th><th>Panel ID</th><th>Status</th><th>Duration</th></tr><tr><td>Sample · 08:12</td><td>SP-01</td><td><span class="pill ok">Completed</span></td><td>4 min</td></tr><tr><td>Sample · Yesterday 16:30</td><td>SP-01</td><td><span class="pill ok">Completed</span></td><td>5 min</td></tr><tr><td>Sample · Mon 09:05</td><td>SP-01</td><td><span class="pill warn">Stopped</span></td><td>1 min</td></tr></table></div>`}
+function elec(){const D=d().slice(-S.period),a=S.role=='admin',t=D.map(x=>x.t),last=D[D.length-1],V=D.map(x=>x.v),I=D.map(x=>x.i),P=D.map(x=>x.p),fresh=!stale(last.t)||S.src=='demo';
+const status=last.v==null||last.i==null?['Unavailable','']:(last.v>cfg.vmax||last.v<cfg.vmin&&last.v>2||last.i>cfg.imax)?['Warning','warn']:fresh?['Normal','ok']:['Offline','bad'];
+const ts=new Date(last.t).toLocaleTimeString();const tag=S.src=='demo'?demoPill:'<span class="pill ok">Live</span>';
+const st=(a,u)=>{const s=stats(a);return s?`Min ${fmt(s.min)} · Max ${fmt(s.max)} · Avg ${fmt(s.avg)} ${u}`:'Data unavailable'};
+const wh=P.reduce((s,n)=>s+(n||0),0)*(10/60);
+const per=`<select data-per aria-label="Period" style="width:auto"><option value="6" ${S.period==6?'selected':''}>Last 1 h</option><option value="36" ${S.period==36?'selected':''}>Last 6 h</option><option value="144" ${S.period==144?'selected':''}>Last 24 h</option></select>`;
+const ch=(n,v,c,u)=>`<div class="card"><div class="row"><h3>${n}</h3>${tag}</div>${line(v,t,c,u)}<div class="sub">${st(v,u)}</div></div>`;
+let ex='';
+if(a)ex=`<div class="grid g2"><div class="card"><h3>Diagnostics</h3><ul class="feed"><li>Voltage sensor<span class="pill ${S.src=='live'?'ok':'demo'}">${S.src=='live'?'Reporting':'Simulated'}</span></li><li>ACS712 current sensor<span class="pill ${S.src=='live'?'ok':'demo'}">${S.src=='live'?'Reporting':'Simulated'}</span></li><li>ThingSpeak connection<span class="pill ${S.src=='live'?'ok':'warn'}">${S.src=='live'?'Connected':cfg.channel?'Unreachable':'Not configured'}</span></li><li>Last successful update<span class="sub">${ts}</span></li><li>Missing or invalid readings<span class="sub">${V.filter(x=>x==null).length}</span></li><li>Data freshness<span class="pill ${fresh?'ok':'bad'}">${fresh?'Fresh':'Stale'}</span></li></ul><p class="sub">ACS712 calibration: set the variant (5A 185 mV/A, 20A 100 mV/A, 30A 66 mV/A) and zero-current offset in the ESP32 firmware. Confirm the voltage module's input range for your panel.</p></div>
+<form class="card" id="cf"><h3>Thresholds and ThingSpeak</h3><label for="c4">Voltage warning: min (V)</label><input id="c4" type="number" step="0.1" value="${cfg.vmin}"><label for="c5">Voltage warning: max (V)</label><input id="c5" type="number" step="0.1" value="${cfg.vmax}"><label for="c6">Current warning: max (A)</label><input id="c6" type="number" step="0.1" value="${cfg.imax}"><label for="c1">Channel ID</label><input id="c1" type="text" value="${cfg.channel}"><label for="c2">Read API key (read-only; never use the Write key here)</label><input id="c2" type="text" value="${cfg.readKey}"><label for="c3">Refresh interval (s)</label><input id="c3" type="number" value="${cfg.refresh}"><label for="c7">Voltage field number</label><input id="c7" type="number" min="1" max="8" value="${cfg.f.v}"><label for="c8">Current field number</label><input id="c8" type="number" min="1" max="8" value="${cfg.f.i}"><div class="row" style="margin-top:12px;justify-content:flex-start"><button class="btn">Save settings</button><button type="button" class="btn sec" id="tc">Test connection</button></div><p class="sub">Live data loads when this page runs on your own host (GitHub Pages) or locally. The hosted preview blocks outside requests.</p></form></div>`;
+else ex=`<div class="card"><h3>What these numbers mean</h3><ul class="feed"><li><span><b>Voltage:</b> electrical potential measured by the voltage sensor.</span></li><li><span><b>Current:</b> electrical current measured by the ACS712.</span></li><li><span><b>Power:</b> the rate of energy transfer, in watts (V × A).</span></li><li><span><b>Energy:</b> accumulated power over time, in Wh or kWh.</span></li></ul></div>`;
+shell('Electrical monitoring',a?'Voltage, current and power with admin diagnostics.':'Read-only view of your system\'s electrical output.',`<div class="row" style="margin-bottom:12px"><span class="sub">Last updated ${ts}${fresh?'':' (stale)'}</span>${per}</div><div class="grid">${card('Solar panel voltage',fmt(last.v),'V','Updated '+ts,tag)}${card('Solar panel current',fmt(last.i),'A','Updated '+ts,tag)}${card('Calculated power',fmt(last.p,1),'W','V × A, same circuit',tag)}${card('Electrical system status',status[0],'',S.src=='demo'?'Based on demonstration data':'Based on live readings','<span class="pill '+status[1]+'">'+status[0]+'</span>')}</div><div class="grid g2">${ch('Voltage over time',V,'#2563eb','V')}${ch('Current over time',I,'#16a34a','A')}${ch('Power over time',P,'#ea8a0c','W')}<div class="card"><h3>Energy estimate</h3><div class="big">${(wh/1000).toFixed(3)} <span class="unit">kWh</span></div><div class="sub">Sum of power over the selected period at 10-minute spacing. Accurate only with evenly spaced readings.</div></div></div>${ex}`)}
+function hist(){shell('History','Cleaning events.',`<div class="card"><div class="row"><h3>Cleaning history</h3>${SAMPLE}</div>${histTable()}<p class="sub">Real cleaning events will appear once a cleaning-status field is mapped in ThingSpeak.</p></div>`)}
+function settings(){if(S.role=='admin'){S.page='elec';return render()}shell('Profile','Your account.',`<div class="card"><h3>${S.user}</h3><p class="sub">Role: Client (read-only). Sensor settings, thresholds and system configuration are available to administrators only.</p></div>`)}
+function clean(){shell('Cleaning control','Start, stop and mode.',cleanCtl())}
+function render(){if(!S.user)return loginView();({dash:dashboard,panel:panel,elec:elec,clean:clean,hist:hist,set:settings})[S.page]();wire()}
+setInterval(()=>{if(S.user&&cfg.channel&&!document.querySelector('.modal'))refresh()},Math.max(15,cfg.refresh)*1000);
+loginView();
+</script></body></html>
